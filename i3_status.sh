@@ -4,7 +4,7 @@
 interval=3
 
 while true; do (
-	 topcpu="$(ps -eo cmd,%cpu --sort=-%cpu |  sed -n 2p | basename $(awk '{print $1 "-"  $2}' ))"
+         topcpu="$( ps -aeo %cpu,command --sort=-%cpu  |   sed -n 2p |  awk '{print $1 "% " $2 }')"
 	 timedate="$(date +'%a %d %b %Y %H:%M')"
          svolume="$(pactl  get-sink-volume $(pactl list short sinks |  awk '{print $1}' )  | sed -n 1p|  awk '{print "R" $5 " L" $12}')"
 	 mem="$(free | sed -n 2p | awk '{printf "%s%.0f%s%.0f Mb\n" ,  "",$3/1024,"/",$7/1024}')"

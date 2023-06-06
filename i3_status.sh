@@ -12,7 +12,7 @@ while true; do (
          cpu="$(top -bn2 | grep '%Cpu' | tail -1 | grep -P '(....|...) id,'|awk '{print 100-$8 "%"}')"
          battery="$(upower -i $(upower -e | grep BAT) | grep  -E "state|to\ full|to\ empty|percentage" | sed -e  ':a;N;$!ba;s/\n/,/g;s/  */ /g' )"
          ineta="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'|  sed -e  ':a;N;$!ba;s/\n/, /g;s/  */ /g')"
-         disks="$(df -H | grep /media | while read -r F; do echo  "$F"  | awk {'print " | " $6  ": "  $2 "/" $4'} | tr -d '\n'| sed -e "s/\/media\///" ; done)"
+         disks="$(df -H | grep /media | while read -r F; do echo  "$F"  | awk {'print " | " $6  ": "  $2 "/" $4'} | tr -d '\n'| sed -e "s/\/media\///;s/\/run//;s/$USER\///" ; done)"
         clear
       	# https://www.compart.com/en/unicode
         echo -en     "\xF0\x9F\x96\xB4$disks | \xF0\x9D\x84\x9C $cpu"/"$cputemp | \xE2\x8F\xB1 $topcpu | \xF0\x9F\x99\xBE $mem | \xF0\x9F\x94\x8B $battery | \xF0\x9F\x96\xA7 $ineta | \xF0\x9F\x8E\xA7 $svolume | $timedate"
